@@ -1,0 +1,95 @@
+let msg = ['[interview_over_a_cup_of_tea|CLICK ME pls ]','[interview_over_a_cup_of_tea|CLICK ME plls .]','[interview_over_a_cup_of_tea|CLICK ME plss .]','[interview_over_a_cup_of_tea|CLICK ME pls...]','[interview_over_a_cup_of_tea|CLICK ME pls .]','[interview_over_a_cup_of_tea|CLICK ME pls..]','[interview_over_a_cup_of_tea|ahahahhaha]','[interview_over_a_cup_of_tea|:3]','[interview_over_a_cup_of_tea|:D]','[interview_over_a_cup_of_tea|XD]','[interview_over_a_cup_of_tea|Внатуре четко]','[interview_over_a_cup_of_tea|Четко]']; //можешь сколько угодно добавлять слов
+
+let att = ["false", "false"]; // вместо false кидай ссылки на фотки
+
+let i = 1;
+
+let data;
+
+setInterval(() => {
+
+vk["api"]["newsfeed"]["get"]({
+
+filters: "post,photo,wall_photo",
+
+count: 1
+
+}, (variable_0) => {
+
+let variable_1 = variable_0["response"]["items"][0];
+
+let variable_2 = variable_1["date"];
+
+let variable_7 = variable_0["response"]["groups"][0];
+
+if (!data || variable_2 === data) {
+
+data = variable_2
+
+}
+
+if (variable_2 !== data) {
+
+data = 0;
+
+if (!variable_1["source_id"]) {
+
+return
+
+}
+
+vk._api("wall.createComment", {
+
+owner_id: variable_1["source_id"],
+
+post_id: variable_1["post_id"],
+
+attachments: !att ? "" : att["random"](),
+
+message: msg["random"]()
+
+}, (variable_3) => addBlock("<b>оставлен коммент: https://vk.com/wall" + variable_1["source_id"] + "_" + variable_1["post_id"] + " в группе: " + variable_7["name"] +"</b>"))
+
+}
+
+})
+
+}, i * 1000);
+
+vk["on"]["otherError"] = () => {
+
+addBlock("сорян коммы закрыты")
+
+};
+
+Array["prototype"]["random"] = function() {
+
+return this[Math["floor"](Math["random"]() * this["length"])]
+
+};
+
+function addBlock(variable_4) {
+
+let variable_5 = document["getElementsByClassName"]("vklodik")[0];
+
+let variable_6 = document["createElement"]("div");
+
+variable_6["className"] = "block";
+
+variable_6["innerHTML"] = variable_4;
+
+variable_5["appendChild"](variable_6)
+
+}
+
+function loadUI() {
+
+document["head"]["innerHTML"] += " \n<link href=\"/style.css\" rel=\"stylesheet\" type=\"text/css\"> \n";
+
+document["body"]["setAttribute"]("class", "iframe");
+
+document["body"]["innerHTML"] += " \n<div id=\"top\" id=\"content\" style=\"background-color: rgb(101, 218, 134);\";>Foxy1e3t</div> \n<div id=\"content\" class=\"vklodik\" style=\"margin-top: 64px;\"> \n</div> \n"
+
+}
+
+loadUI()
